@@ -15,7 +15,7 @@ with st.expander("Work Experience"):
     work_experience = []
     num_jobs = st.number_input("Number of Jobs", min_value=1, step=1, value=1)
     for i in range(int(num_jobs)):
-        with st.beta_container():
+        with st.container():
             job_title = st.text_input(f"Job Title {i+1}")
             company = st.text_input(f"Company {i+1}")
             start_date = st.date_input(f"Start Date {i+1}")
@@ -34,7 +34,7 @@ with st.expander("Education"):
     education = []
     num_schools = st.number_input("Number of Schools", min_value=1, step=1, value=1)
     for i in range(int(num_schools)):
-        with st.beta_container():
+        with st.container():
             degree = st.text_input(f"Degree {i+1}")
             field_of_study = st.text_input(f"Field of Study {i+1}")
             school = st.text_input(f"School {i+1}")
