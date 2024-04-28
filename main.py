@@ -66,7 +66,7 @@ if st.button("Generate Resume"):
         image.thumbnail((100, 100))  # Resize image if needed
         img_data = io.BytesIO()
         image.save(img_data, format='PNG')
-        pdf.image(img_data.getvalue(), x=10, y=150, w=50)
+        pdf.image(img_data, x=10, y=150, w=50)
 
     st.write("Your resume has been generated.")
     
