@@ -80,7 +80,42 @@ if st.button("Generate HTML Code"):
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    {/* Your existing HTML code */}
+    <div class="section">
+        <h1>{name}</h1>
+        <p>Email: {email}</p>
+        <p>Phone: {phone}</p>
+    </div>
+
+    <div class="section">
+        <h2>Work Experience</h2>
+        {' '.join([f"""
+        <div>
+            <p class="job-title">{job['job_title']} at {job['company']}</p>
+            <p class="job-details">({job['start_date'].strftime('%b %Y')} - {job['end_date'].strftime('%b %Y')})</p>
+            <p>{job['job_description']}</p>
+        </div>
+        """ for job in work_experience])}
+    </div>
+
+    <div class="section">
+        <h2>Education</h2>
+        {' '.join([f"""
+        <div>
+            <p class="degree">{school['degree']} in {school['field_of_study']}</p>
+            <p class="education-details">from {school['school']} ({school['graduation_date'].strftime('%b %Y')})</p>
+        </div>
+        """ for school in education])}
+    </div>
+
+    <div class="section">
+        <h2>Hard Skills</h2>
+        <p>{hard_skills}</p>
+    </div>
+
+    <div class="section">
+        <h2>Soft Skills</h2>
+        <p>{soft_skills}</p>
+    </div>
 </body>
 </html>
     """
