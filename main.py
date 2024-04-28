@@ -8,6 +8,7 @@ st.set_page_config(page_title="Создатель Резюме", layout="wide")
 st.title("Создатель Резюме")
 
 # Личная информация
+# Тут придельно все понятно, но лучше не трогать сохранение фото профиля
 with st.expander("Личная информация"):
     col1, col2 = st.columns(2)
     with col1:
@@ -18,6 +19,7 @@ with st.expander("Личная информация"):
     profile_pic = st.file_uploader("Загрузить фото профиля", type=["jpg", "jpeg", "png"], key="profile_pic")
 
 # Сохранение загруженного изображения
+# До этого старался сохранить полный путь, но сейчас важно, что просто все работает
 if profile_pic is not None:
     profile_pic_filename = os.path.basename(profile_pic.name)
 else:
@@ -33,6 +35,7 @@ else:
     background_style = f"background-image: url('{background_gif}');" if background_gif else "background-color: #f5f5f5;"
 
 # Опыт работы
+# Количество выводится через массив
 with st.expander("Опыт работы"):
     work_experience = []
     num_jobs = st.number_input("Количество мест работы", min_value=1, step=1, value=1, key="num_jobs")
@@ -52,6 +55,7 @@ with st.expander("Опыт работы"):
             })
 
 # Образование
+# Тоже самое, что и с опытом работы
 with st.expander("Образование"):
     education = []
     num_schools = st.number_input("Количество учебных заведений", min_value=1, step=1, value=1, key="num_schools")
@@ -69,6 +73,7 @@ with st.expander("Образование"):
             })
 
 # Навыки
+# Просто хард и софт скилы
 with st.expander("Навыки"):
     col1, col2 = st.columns(2)
     with col1:
@@ -77,6 +82,7 @@ with st.expander("Навыки"):
         soft_skills = st.text_area("Личные качества", key="soft_skills")
 
 # Проекты
+# Можно было сделать что нибудь прикольное с гитхабом, но важно, что бы все было индивидуально. 
 with st.expander("Проекты"):
     projects = []
     num_projects = st.number_input("Количество проектов", min_value=0, step=1, value=0, key="num_projects")
@@ -95,6 +101,7 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
     else:
         profile_pic_filename = ""
 
+    # А вот тут начинается магия 
     html_code = f"""
 <!DOCTYPE html>
 <html>
