@@ -84,13 +84,11 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
         body {{
             font-family: 'Roboto', sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 20px;
             background-color: #f5f5f5;
         }}
-        .container {{
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px;
+        h1, h2, h3 {{
+            color: #333;
         }}
         .section {{
             background-color: white;
@@ -98,11 +96,6 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-        }}
-        .section h1, .section h2, .section h3 {{
-            color: #333;
         }}
         .job-title, .degree, .project-name {{
             font-weight: bold;
@@ -111,35 +104,41 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
             color: #666;
             margin-bottom: 10px;
         }}
-        .profile-pic {{
-            margin-right: 20px;
-            border-radius: 50%;
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-        }}
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Имя: {name}</h1>
-    <p>Электронная почта: {email}</p>
-    <p>Телефон: {phone}</p>
-    <p>Фото профиля: {profile_pic_name}</p>
+    <div class="section">
+        <h1>Имя: {name}</h1>
+        <p>Электронная почта: {email}</p>
+        <p>Телефон: {phone}</p>
+        <p>Фото профиля: {profile_pic_name}</p>
+    </div>
 
-    <h2>Опыт работы</h2>
-    {''.join([f"<p>{job['job_title']} в {job['company']} ({job['start_date']} - {job['end_date']})</p><p>{job['job_description']}</p>" for job in work_experience])}
+    <div class="section">
+        <h2>Опыт работы</h2>
+        {''.join([f"<div><p class='job-title'>{job['job_title']} в {job['company']}</p><p class='job-details'>({job['start_date']} - {job['end_date']})</p><p>{job['job_description']}</p></div>" for job in work_experience])}
+    </div>
 
-    <h2>Образование</h2>
-    {''.join([f"<p>{school['degree']} по направлению {school['field_of_study']} в {school['school']} ({school['graduation_date']})</p>" for school in education])}
+    <div class="section">
+        <h2>Образование</h2>
+        {''.join([f"<div><p class='degree'>{school['degree']} по направлению {school['field_of_study']} в {school['school']} ({school['graduation_date']})</p></div>" for school in education])}
+    </div>
 
-    <h2>Навыки</h2>
-    <h3>Профессиональные навыки:</h3>
-    <p>{hard_skills}</p>
-    <h3>Личные качества:</h3>
-    <p>{soft_skills}</p>
+    <div class="section">
+        <h2>Навыки</h2>
+        <h3>Профессиональные навыки:</h3>
+        <p>{hard_skills}</p>
+        <h3>Личные качества:</h3>
+        <p>{soft_skills}</p>
+    </div>
 
-    <h2>Проекты</h2>
-    {''.join([f"<p>{project['name']} - <a href='{project['link']}' target='_blank'>{project['link']}</a></p>" for project in projects])}
+    <div class="section">
+        <h2>Проекты</h2>
+        {''.join([f"<div><p class='project-name'>{project['name']}</p><p class='project-link'><a href='{project['link']}' target='_blank'>{project['link']}</a></p></div>" for project in projects])}
+    </div>
 </body>
 </html>
     """
