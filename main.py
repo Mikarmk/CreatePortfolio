@@ -1,5 +1,9 @@
 import streamlit as st
-from fpdf import FPDF
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from reportlab.lib.enums import TA_LEFT, TA_CENTER
 from PIL import Image
 import io
 
@@ -36,47 +40,53 @@ with st.expander("Add Skills"):
     skills = st.text_area("Skills")
 
 if st.button("Generate Resume"):
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
+    # Create a BytesIO object to hold the LaTeX data
+    latex_bytes = io.BytesIO()
 
-    pdf.cell(200, 10, f"Name: {name}", ln=True)
-    pdf.cell(200, 10, f"Email: {email}", ln=True)
-    pdf.cell(200, 10, f"Phone: {phone}", ln=True)
+    # Create the LaTeX document
+    doc = SimpleDocTemplate(latex_bytes, pagesize=letter)
+    styles = getSampleStyleSheet()
 
-    pdf.set_font("Arial", style="B", size=14)
-    pdf.cell(200, 10, "Work Experience", ln=True)
-    pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, f"- {job_title} at {company} ({start_date.strftime('%b %Y')} - {end_date.strftime('%b %Y')})", ln=True)
-    pdf.multi_cell(0, 10, job_description)
+    # Add personal information
+    elements = []
+    elements.append(Paragraph(name, styles["Heading1"]))
+    elements.append(Paragraph(email, styles["BodyText"]))
+    elements.append(Paragraph(phone, styles["BodyText"]))
+    elements.append(Spacer(1, 12))
 
-    pdf.set_font("Arial", style="B", size=14)
-    pdf.cell(200, 10, "Education", ln=True)
-    pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, f"- {degree} in {field_of_study} from {school} ({graduation_date.strftime('%b %Y')})", ln=True)
+    # Add work experience
+    elements.append(Paragraph("Work Experience", styles["Heading2"]))
+    elements.append(Paragraph(f"{job_title} at {company} ({start_date.strftime('%b %Y')} - {end_date.strftime('%b %Y')})", styles["BodyText"]))
+    elements.append(Paragraph(job_description, styles["BodyText"]))
+    elements.append(Spacer(1, 12))
 
-    pdf.set_font("Arial", style="B", size=14)
-    pdf.cell(200, 10, "Skills", ln=True)
-    pdf.set_font("Arial", size=12)
+    # Add education
+    elements.append(Paragraph("Education", styles["Heading2"]))
+    elements.append(Paragraph(f"{degree} in {field_of_study} from {school} ({graduation_date.strftime('%b %Y')})", styles["BodyText"]))
+    elements.append(Spacer(1, 12))
+
+    # Add skills
+    elements.append(Paragraph("Skills", styles["Heading2"]))
     for skill in skills.split(","):
-        pdf.cell(200, 10, f"- {skill.strip()}", ln=True)
+        elements.append(Paragraph(f"- {skill.strip()}", styles["BodyText"]))
+    elements.append(Spacer(1, 12))
 
+    # Add photo if available
     if photo is not None:
         image = Image.open(photo)
-        image.thumbnail((100, 100))  # Resize image if needed
+        image.thumbnail((1 * inch, 1 * inch))
         img_data = io.BytesIO()
         image.save(img_data, format='PNG')
-        pdf.image(img_data, x=10, y=150, w=50)
+        elements.append(Image(img_data, width=1 * inch, height=1 * inch))
+        elements.append(Spacer(1, 12))
 
-    st.write("Your resume has been generated.")
-    
-    # Create a BytesIO object to hold the PDF data
-    pdf_bytes = io.BytesIO(pdf.output(dest="S").encode("latin1"))
+    # Build the PDF
+    doc.build(elements)
 
-    # Allow the user to download the PDF
+    # Allow the user to download the LaTeX file
     st.download_button(
         label="Download Resume",
-        data=pdf_bytes,
-        file_name=f"{name}_resume.pdf",
-        mime="application/pdf",
+        data=latex_bytes.getvalue(),
+        file_name=f"{name}_resume.tex",
+        mime="application/x-tex",
     )
