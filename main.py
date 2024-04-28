@@ -17,6 +17,10 @@ with st.expander("Личная информация"):
     phone = st.text_input("Телефон", key="phone")
     profile_pic = st.file_uploader("Загрузить фото профиля", type=["jpg", "jpeg", "png"], key="profile_pic")
 
+# Выбор фона
+background_image = st.file_uploader("Выберите изображение для фона или введите ссылку на гифку", type=["jpg", "jpeg", "png", "gif"], key="background_image")
+background_style = f"background-image: url('{background_image}')" if background_image else "background-color: #f5f5f5;"
+
 # Опыт работы
 with st.expander("Опыт работы"):
     work_experience = []
@@ -90,8 +94,7 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
-            background-image: url('https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif');
+            {background_style}
             background-size: cover;
             background-repeat: no-repeat;
         }}
