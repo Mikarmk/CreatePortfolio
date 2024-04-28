@@ -73,24 +73,29 @@ with st.expander("Проекты"):
             })
 
 if st.button("Сгенерировать HTML-код", key="generate_button"):
-    html_code = """
+    if profile_pic is not None:
+        profile_pic_base64 = profile_pic.getvalue().decode("utf-8")
+    else:
+        profile_pic_base64 = ""
+
+    html_code = f"""
 <!DOCTYPE html>
 <html>
 <head>
     <title>Резюме</title>
     <style>
-        body {
+        body {{
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f5f5f5;
-        }
-        .container {
+        }}
+        .container {{
             max-width: 800px;
             margin: 0 auto;
             padding: 40px;
-        }
-        .section {
+        }}
+        .section {{
             background-color: white;
             padding: 20px;
             border-radius: 5px;
@@ -98,24 +103,24 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
             margin-bottom: 30px;
             display: flex;
             align-items: center;
-        }
-        .section h1, .section h2, .section h3 {
+        }}
+        .section h1, .section h2, .section h3 {{
             color: #333;
-        }
-        .job-title, .degree, .project-name {
+        }}
+        .job-title, .degree, .project-name {{
             font-weight: bold;
-        }
-        .job-details, .education-details, .project-link {
+        }}
+        .job-details, .education-details, .project-link {{
             color: #666;
             margin-bottom: 10px;
-        }
-        .profile-pic {
+        }}
+        .profile-pic {{
             margin-right: 20px;
             border-radius: 50%;
             width: 100px;
             height: 100px;
             object-fit: cover;
-        }
+        }}
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -124,7 +129,7 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
 <body>
     <div class="container">
         <div class="section">
-            {'<img src="data:image/png;base64,{}" class="profile-pic" />' if profile_pic else ''}
+            {'<img src="data:image/png;base64,{profile_pic_base64}" class="profile-pic" />' if profile_pic_base64 else ''}
             <div>
                 <h1>{name}</h1>
                 <p>Электронная почта: {email}</p>
