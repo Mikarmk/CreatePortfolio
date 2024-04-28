@@ -19,11 +19,10 @@ with st.expander("Личная информация"):
 
 # Сохранение загруженного изображения
 if profile_pic is not None:
-    profile_pic_filename = os.path.join("uploads", profile_pic.name)
-    with open(profile_pic_filename, "wb") as f:
-        f.write(profile_pic.getbuffer())
+    profile_pic_filename = os.path.basename(profile_pic.name)
 else:
     profile_pic_filename = ""
+    
 # Выбор фона
 background_type = st.radio("Выберите тип фона", ("Изображение", "Гифка"), key="background_type")
 if background_type == "Изображение":
