@@ -1,4 +1,5 @@
 import streamlit as st
+from fpdf import FPDF
 
 st.set_page_config(page_title="Resume Builder")
 st.title("Resume Builder")
@@ -8,6 +9,7 @@ st.header("Personal Information")
 name = st.text_input("Name")
 email = st.text_input("Email")
 phone = st.text_input("Phone")
+photo = st.file_uploader("Upload Photo", type=["jpg", "jpeg", "png"])
 
 # Work Experience
 st.header("Work Experience")
@@ -32,15 +34,34 @@ with st.expander("Add Skills"):
     skills = st.text_area("Skills")
 
 if st.button("Generate Resume"):
-    st.header("Your Resume")
-    st.write(f"Name: {name}")
-    st.write(f"Email: {email}")
-    st.write(f"Phone: {phone}")
-    st.write("**Work Experience:**")
-    st.write(f"- {job_title} at {company} ({start_date.strftime('%b %Y')} - {end_date.strftime('%b %Y')})")
-    st.write(job_description)
-    st.write("**Education:**")
-    st.write(f"- {degree} in {field_of_study} from {school} ({graduation_date.strftime('%b %Y')})")
-    st.write("**Skills:**")
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+
+    pdf.cell(200, 10, f"Name: {name}", ln=True)
+    pdf.cell(200, 10, f"Email: {email}", ln=True)
+    pdf.cell(200, 10, f"Phone: {phone}", ln=True)
+
+    pdf.set_font("Arial", style="B", size=14)
+    pdf.cell(200, 10, "Work Experience", ln=True)
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, f"- {job_title} at {company} ({start_date.strftime('%b %Y')} - {end_date.strftime('%b %Y')})", ln=True)
+    pdf.multi_cell(0, 10, job_description)
+
+    pdf.set_font("Arial", style="B", size=14)
+    pdf.cell(200, 10, "Education", ln=True)
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, f"- {degree} in {field_of_study} from {school} ({graduation_date.strftime('%b %Y')})", ln=True)
+
+    pdf.set_font("Arial", style="B", size=14)
+    pdf.cell(200, 10, "Skills", ln=True)
+    pdf.set_font("Arial", size=12)
     for skill in skills.split(","):
-        st.write(f"- {skill.strip()}")
+        pdf.cell(200, 10, f"- {skill.strip()}", ln=True)
+
+    if photo is not None:
+        pdf.image(photo, x=10, y=100, w=50)
+
+    st.write("Your resume has been generated.")
+    st.write("Download your resume:")
+    st.write(pdf.output(name + "_resume.pdf", dest="S").encode("latin1"), unsafe_allow_html=True)
