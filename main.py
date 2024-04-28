@@ -131,7 +131,7 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
 <body>
     <div class="container">
         <div class="section">
-            {'<img src="{profile_pic_filename}" class="profile-pic" />' if profile_pic_filename else ''}
+            {'<img src="' + profile_pic_filename + '" class="profile-pic" />' if profile_pic_filename else ''}
             <div>
                 <h1>{name}</h1>
                 <p>Электронная почта: {email}</p>
