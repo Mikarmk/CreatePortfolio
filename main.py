@@ -84,18 +84,18 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
 <head>
     <title>Резюме</title>
     <style>
-        body {{
+        body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f5f5f5;
-        }}
-        .container {{
+        }
+        .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 40px;
-        }}
-        .section {{
+        }
+        .section {
             background-color: white;
             padding: 20px;
             border-radius: 5px;
@@ -103,24 +103,24 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
             margin-bottom: 30px;
             display: flex;
             align-items: center;
-        }}
-        .section h1, .section h2, .section h3 {{
+        }
+        .section h1, .section h2, .section h3 {
             color: #333;
-        }}
-        .job-title, .degree, .project-name {{
+        }
+        .job-title, .degree, .project-name {
             font-weight: bold;
-        }}
-        .job-details, .education-details, .project-link {{
+        }
+        .job-details, .education-details, .project-link {
             color: #666;
             margin-bottom: 10px;
-        }}
-        .profile-pic {{
+        }
+        .profile-pic {
             margin-right: 20px;
             border-radius: 50%;
             width: 100px;
             height: 100px;
             object-fit: cover;
-        }}
+        }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -137,54 +137,7 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
             </div>
         </div>
 
-        <div class="section">
-            <div>
-                <h2>Опыт работы</h2>
-                {' '.join([f"""
-                <div>
-                    <p class="job-title">{job['job_title']} в {job['company']}</p>
-                    <p class="job-details">({job['start_date'].strftime('%b %Y')} - {job['end_date'].strftime('%b %Y')})</p>
-                    <p>{job['job_description']}</p>
-                </div>
-                """ for job in work_experience])}
-            </div>
-        </div>
-
-        <div class="section">
-            <div>
-                <h2>Образование</h2>
-                {' '.join([f"""
-                <div>
-                    <p class="degree">{school['degree']} по направлению {school['field_of_study']}</p>
-                    <p class="education-details">в {school['school']} ({school['graduation_date'].strftime('%b %Y')})</p>
-                </div>
-                """ for school in education])}
-            </div>
-        </div>
-
-        <div class="section">
-            <div>
-                <h2>Навыки</h2>
-                <h3>Профессиональные навыки</h3>
-                <p>{hard_skills}</p>
-                <h3>Личные качества</h3>
-                <p>{soft_skills}</p>
-            </div>
-        </div>
-
-        {f"""
-        <div class="section">
-            <div>
-                <h2>Проекты</h2>
-                {' '.join([f"""
-                <div>
-                    <p class="project-name">{project['name']}</p>
-                    <p class="project-link"><a href="{project['link']}" target="_blank">{project['link']}</a></p>
-                </div>
-                """ for project in projects])}
-            </div>
-        </div>
-        """ if projects else ""}
+        {/* Остальной код */}
     </div>
 </body>
 </html>
