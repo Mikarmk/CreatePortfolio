@@ -18,8 +18,13 @@ with st.expander("Личная информация"):
     profile_pic = st.file_uploader("Загрузить фото профиля", type=["jpg", "jpeg", "png"], key="profile_pic")
 
 # Выбор фона
-background_image = st.file_uploader("Выберите изображение для фона или введите ссылку на гифку", type=["jpg", "jpeg", "png", "gif"], key="background_image")
-background_style = f"background-image: url('{background_image}')" if background_image else "background-color: #f5f5f5;"
+background_type = st.radio("Выберите тип фона", ("Изображение", "Гифка"), key="background_type")
+if background_type == "Изображение":
+    background_image = st.file_uploader("Загрузите изображение для фона", type=["jpg", "jpeg", "png"], key="background_image")
+    background_style = f"background-image: url('{background_image}')" if background_image else "background-color: #f5f5f5;"
+else:
+    background_gif = st.text_input("Введите ссылку на гифку для фона", key="background_gif")
+    background_style = f"background-image: url('{background_gif}');" if background_gif else "background-color: #f5f5f5;"
 
 # Опыт работы
 with st.expander("Опыт работы"):
@@ -106,7 +111,7 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }}
-        .section {{
+         .section {{
             background-color: white;
             padding: 20px;
             border-radius: 5px;
@@ -184,7 +189,7 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
             </div>
         </div>
 
-        <div class="section">
+       <div class="section">
             <div>
                 <h2>Опыт работы</h2>
                 {' '.join([f"""
