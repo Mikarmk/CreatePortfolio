@@ -69,5 +69,14 @@ if st.button("Generate Resume"):
         pdf.image(img_data.getvalue(), x=10, y=150, w=50)
 
     st.write("Your resume has been generated.")
-    st.write("Download your resume:")
-    st.write(pdf.output(name + "_resume.pdf", dest="S").encode("latin1"), unsafe_allow_html=True)
+    
+    # Create a BytesIO object to hold the PDF data
+    pdf_bytes = io.BytesIO(pdf.output(dest="S").encode("latin1"))
+
+    # Allow the user to download the PDF
+    st.download_button(
+        label="Download Resume",
+        data=pdf_bytes,
+        file_name=f"{name}_resume.pdf",
+        mime="application/pdf",
+    )
