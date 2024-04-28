@@ -77,11 +77,8 @@ with st.expander("Проекты"):
 if st.button("Сгенерировать HTML-код", key="generate_button"):
     if profile_pic is not None:
         profile_pic_filename = profile_pic.name
-        profile_pic_path = os.path.join(os.path.dirname(__file__), profile_pic_filename)
-        with open(profile_pic_path, "wb") as f:
-            f.write(profile_pic.getvalue())
     else:
-        profile_pic_path = ""
+        profile_pic_filename = ""
 
     html_code = f"""
 <!DOCTYPE html>
@@ -134,7 +131,7 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
 <body>
     <div class="container">
         <div class="section">
-            {'<img src="{profile_pic_path}" class="profile-pic" />' if profile_pic_path else ''}
+            {'<img src="{profile_pic_filename}" class="profile-pic" />' if profile_pic_filename else ''}
             <div>
                 <h1>{name}</h1>
                 <p>Электронная почта: {email}</p>
