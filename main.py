@@ -73,49 +73,99 @@ if st.button("Generate HTML Code"):
 <head>
     <title>Resume</title>
     <style>
-        /* Your existing CSS styles */
+        body {{
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }}
+        .container {{
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+        }}
+        .section {{
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }}
+        .section h1, .section h2 {{
+            color: #333;
+        }}
+        .job-title, .degree {{
+            font-weight: bold;
+        }}
+        .job-details, .education-details {{
+            color: #666;
+            margin-bottom: 10px;
+        }}
+        .expand-btn {{
+            display: block;
+            width: 100%;
+            text-align: right;
+            color: #666;
+            cursor: pointer;
+        }}
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="section">
-        <h1>{name}</h1>
-        <p>Email: {email}</p>
-        <p>Phone: {phone}</p>
-    </div>
-
-    <div class="section">
-        <h2>Work Experience</h2>
-        {' '.join([f"""
-        <div>
-            <p class="job-title">{job['job_title']} at {job['company']}</p>
-            <p class="job-details">({job['start_date'].strftime('%b %Y')} - {job['end_date'].strftime('%b %Y')})</p>
-            <p>{job['job_description']}</p>
+    <div class="container">
+        <div class="section">
+            <h1>{name}</h1>
+            <p>Email: {email}</p>
+            <p>Phone: {phone}</p>
         </div>
-        """ for job in work_experience])}
-    </div>
 
-    <div class="section">
-        <h2>Education</h2>
-        {' '.join([f"""
-        <div>
-            <p class="degree">{school['degree']} in {school['field_of_study']}</p>
-            <p class="education-details">from {school['school']} ({school['graduation_date'].strftime('%b %Y')})</p>
+        <div class="section">
+            <h2>Work Experience</h2>
+            {' '.join([f"""
+            <div>
+                <p class="job-title">{job['job_title']} at {job['company']}</p>
+                <p class="job-details">({job['start_date'].strftime('%b %Y')} - {job['end_date'].strftime('%b %Y')})</p>
+                <p>{job['job_description']}</p>
+                <span class="expand-btn" onclick="toggleDescription(this)">Show More</span>
+            </div>
+            """ for job in work_experience])}
         </div>
-        """ for school in education])}
+
+        <div class="section">
+            <h2>Education</h2>
+            {' '.join([f"""
+            <div>
+                <p class="degree">{school['degree']} in {school['field_of_study']}</p>
+                <p class="education-details">from {school['school']} ({school['graduation_date'].strftime('%b %Y')})</p>
+            </div>
+            """ for school in education])}
+        </div>
+
+        <div class="section">
+            <h2>Hard Skills</h2>
+            <p>{hard_skills}</p>
+        </div>
+
+        <div class="section">
+            <h2>Soft Skills</h2>
+            <p>{soft_skills}</p>
+        </div>
     </div>
 
-    <div class="section">
-        <h2>Hard Skills</h2>
-        <p>{hard_skills}</p>
-    </div>
-
-    <div class="section">
-        <h2>Soft Skills</h2>
-        <p>{soft_skills}</p>
-    </div>
+    <script>
+        function toggleDescription(btn) {{
+            var description = btn.previousElementSibling;
+            if (description.style.display === 'none') {{
+                description.style.display = 'block';
+                btn.textContent = 'Show Less';
+            }} else {{
+                description.style.display = 'none';
+                btn.textContent = 'Show More';
+            }}
+        }}
+    </script>
 </body>
 </html>
     """
