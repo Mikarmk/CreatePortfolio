@@ -1,5 +1,7 @@
 import streamlit as st
 from fpdf import FPDF
+from PIL import Image
+import io
 
 st.set_page_config(page_title="Resume Builder")
 st.title("Resume Builder")
@@ -60,7 +62,11 @@ if st.button("Generate Resume"):
         pdf.cell(200, 10, f"- {skill.strip()}", ln=True)
 
     if photo is not None:
-        pdf.image(photo, x=10, y=100, w=50)
+        image = Image.open(photo)
+        image.thumbnail((100, 100))  # Resize image if needed
+        img_data = io.BytesIO()
+        image.save(img_data, format='JPEG')
+        pdf.image(img_data, x=10, y=150, w=50)
 
     st.write("Your resume has been generated.")
     st.write("Download your resume:")
