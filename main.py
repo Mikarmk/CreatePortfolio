@@ -85,19 +85,25 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
 <html>
 <head>
     <title>Резюме</title>
-    <style>
-        body {{
+     <style>
+        body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f5f5f5;
-        }}
-        .container {{
+            background-image: url('https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 40px;
-        }}
-        .section {{
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .section {
             background-color: white;
             padding: 20px;
             border-radius: 5px;
@@ -105,24 +111,60 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
             margin-bottom: 30px;
             display: flex;
             align-items: center;
-        }}
-        .section h1, .section h2, .section h3 {{
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .section h1, .section h2, .section h3 {
             color: #333;
-        }}
-        .job-title, .degree, .project-name {{
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        .job-title, .degree, .project-name {
             font-weight: bold;
-        }}
-        .job-details, .education-details, .project-link {{
+            color: #4CAF50;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .job-details, .education-details, .project-link {
             color: #666;
             margin-bottom: 10px;
-        }}
-        .profile-pic {{
+        }
+        .profile-pic {
             margin-right: 20px;
             border-radius: 50%;
             width: 100px;
             height: 100px;
             object-fit: cover;
-        }}
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            animation: bounce 2s ease-in-out infinite;
+        }
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        .project-link a {
+            color: #2196F3;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+        }
+        .project-link a:hover {
+            color: #0D47A1;
+        }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
