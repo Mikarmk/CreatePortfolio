@@ -1,7 +1,6 @@
 import streamlit as st
 from PIL import Image
 from datetime import datetime
-import base64
 
 st.set_page_config(page_title="Создатель Резюме", layout="wide")
 st.title("Создатель Резюме")
@@ -74,10 +73,7 @@ with st.expander("Проекты"):
             })
 
 if st.button("Сгенерировать HTML-код", key="generate_button"):
-    if profile_pic is not None:
-        profile_pic_base64 = base64.b64encode(profile_pic.getvalue()).decode("utf-8")
-    else:
-        profile_pic_base64 = ""
+    profile_pic_name = profile_pic.name if profile_pic else "Нет изображения"
 
     html_code = f"""
 <!DOCTYPE html>
@@ -123,70 +119,27 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
             object-fit: cover;
         }}
     </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <div class="section">
-            {'<img src="data:image/png;base64,{profile_pic_base64}" class="profile-pic" />' if profile_pic_base64 else ''}
-            <div>
-                <h1>{name}</h1>
-                <p>Электронная почта: {email}</p>
-                <p>Телефон: {phone}</p>
-            </div>
-        </div>
+    <h1>Имя: {name}</h1>
+    <p>Электронная почта: {email}</p>
+    <p>Телефон: {phone}</p>
+    <p>Фото профиля: {profile_pic_name}</p>
 
-        <div class="section">
-            <div>
-                <h2>Опыт работы</h2>
-                {' '.join([f"""
-                <div>
-                    <p class="job-title">{job['job_title']} в {job['company']}</p>
-                    <p class="job-details">({job['start_date'].strftime('%b %Y')} - {job['end_date'].strftime('%b %Y')})</p>
-                    <p>{job['job_description']}</p>
-                </div>
-                """ for job in work_experience])}
-            </div>
-        </div>
+    <h2>Опыт работы</h2>
+    {''.join([f"<p>{job['job_title']} в {job['company']} ({job['start_date']} - {job['end_date']})</p><p>{job['job_description']}</p>" for job in work_experience])}
 
-        <div class="section">
-            <div>
-                <h2>Образование</h2>
-                {' '.join([f"""
-                <div>
-                    <p class="degree">{school['degree']} по направлению {school['field_of_study']}</p>
-                    <p class="education-details">в {school['school']} ({school['graduation_date'].strftime('%b %Y')})</p>
-                </div>
-                """ for school in education])}
-            </div>
-        </div>
+    <h2>Образование</h2>
+    {''.join([f"<p>{school['degree']} по направлению {school['field_of_study']} в {school['school']} ({school['graduation_date']})</p>" for school in education])}
 
-        <div class="section">
-            <div>
-                <h2>Навыки</h2>
-                <h3>Профессиональные навыки</h3>
-                <p>{hard_skills}</p>
-                <h3>Личные качества</h3>
-                <p>{soft_skills}</p>
-            </div>
-        </div>
+    <h2>Навыки</h2>
+    <h3>Профессиональные навыки:</h3>
+    <p>{hard_skills}</p>
+    <h3>Личные качества:</h3>
+    <p>{soft_skills}</p>
 
-        {f"""
-        <div class="section">
-            <div>
-                <h2>Проекты</h2>
-                {' '.join([f"""
-                <div>
-                    <p class="project-name">{project['name']}</p>
-                    <p class="project-link"><a href="{project['link']}" target="_blank">{project['link']}</a></p>
-                </div>
-                """ for project in projects])}
-            </div>
-        </div>
-        """ if projects else ""}
-    </div>
+    <h2>Проекты</h2>
+    {''.join([f"<p>{project['name']} - <a href='{project['link']}' target='_blank'>{project['link']}</a></p>" for project in projects])}
 </body>
 </html>
     """
