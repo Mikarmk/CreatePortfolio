@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image
 from datetime import datetime
+import base64
 
 st.set_page_config(page_title="Создатель Резюме", layout="wide")
 st.title("Создатель Резюме")
@@ -74,7 +75,7 @@ with st.expander("Проекты"):
 
 if st.button("Сгенерировать HTML-код", key="generate_button"):
     if profile_pic is not None:
-        profile_pic_base64 = profile_pic.getvalue().decode("utf-8")
+        profile_pic_base64 = base64.b64encode(profile_pic.getvalue()).decode("utf-8")
     else:
         profile_pic_base64 = ""
 
