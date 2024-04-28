@@ -17,6 +17,13 @@ with st.expander("Личная информация"):
     phone = st.text_input("Телефон", key="phone")
     profile_pic = st.file_uploader("Загрузить фото профиля", type=["jpg", "jpeg", "png"], key="profile_pic")
 
+# Сохранение загруженного изображения
+if profile_pic is not None:
+    profile_pic_filename = os.path.join("uploads", profile_pic.name)
+    with open(profile_pic_filename, "wb") as f:
+        f.write(profile_pic.getbuffer())
+else:
+    profile_pic_filename = ""
 # Выбор фона
 background_type = st.radio("Выберите тип фона", ("Изображение", "Гифка"), key="background_type")
 if background_type == "Изображение":
@@ -181,7 +188,7 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
 <body>
     <div class="container">
         <div class="section">
-        {'<img src="' + profile_pic_filename + '" class="profile-pic" />' if profile_pic_filename else ''}
+            {'<img src="' + profile_pic_filename + '" class="profile-pic" />' if profile_pic_filename else ''}
             <div>
                 <h1>{name}</h1>
                 <p>Электронная почта: {email}</p>
