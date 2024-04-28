@@ -51,51 +51,60 @@ with st.expander("Skills"):
     hard_skills = st.text_area("Hard Skills")
     soft_skills = st.text_area("Soft Skills")
 
-if st.button("Generate LaTeX Code"):
-    latex_code = f"""
-\\documentclass{{article}}
-\\usepackage{{geometry}}
-\\usepackage{{lipsum}}
+if st.button("Generate HTML Code"):
+    html_code = f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume</title>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }}
+        h1, h2 {{
+            color: #333;
+        }}
+        .section {{
+            margin-bottom: 20px;
+        }}
+    </style>
+</head>
+<body>
+    <h1>{name}</h1>
+    <p>Email: {email}</p>
+    <p>Phone: {phone}</p>
 
-\\title{{Resume}}
-\\author{{{name}}}
-\\date{{}}
+    <div class="section">
+        <h2>Work Experience</h2>
+        {' '.join([f"""
+        <div>
+            <h3>{job['job_title']} at {job['company']} ({job['start_date'].strftime('%b %Y')} - {job['end_date'].strftime('%b %Y')})</h3>
+            <p>{job['job_description']}</p>
+        </div>
+        """ for job in work_experience])}
+    </div>
 
-\\begin{{document}}
+    <div class="section">
+        <h2>Education</h2>
+        {' '.join([f"""
+        <div>
+            <h3>{school['degree']} in {school['field_of_study']} from {school['school']} ({school['graduation_date'].strftime('%b %Y')})</h3>
+        </div>
+        """ for school in education])}
+    </div>
 
-\\maketitle
+    <div class="section">
+        <h2>Hard Skills</h2>
+        <p>{hard_skills}</p>
+    </div>
 
-\\section{{Personal Information}}
-Name: {name} \\
-Email: {email} \\
-Phone: {phone}
-
-\\section{{Work Experience}}
-"""
-
-    for job in work_experience:
-        latex_code += f"""
-\\textbf{{{job['job_title']}}} at {job['company']} ({job['start_date'].strftime('%b %Y')} - {job['end_date'].strftime('%b %Y')}) \\
-{job['job_description']}
-
-"""
-
-    latex_code += """\\section{{Education}}"""
-
-    for school in education:
-        latex_code += f"""
-{school['degree']} in {school['field_of_study']} from {school['school']} ({school['graduation_date'].strftime('%b %Y')})
-
-"""
-
-    latex_code += f"""
-\\section{{Hard Skills}}
-{hard_skills}
-
-\\section{{Soft Skills}}
-{soft_skills}
-
-\\end{{document}}
+    <div class="section">
+        <h2>Soft Skills</h2>
+        <p>{soft_skills}</p>
+    </div>
+</body>
+</html>
     """
 
-    st.code(latex_code, language='latex')
+    st.code(html_code, language='html')
