@@ -73,13 +73,13 @@ with st.expander("Проекты"):
             })
 
 if st.button("Сгенерировать HTML-код", key="generate_button"):
-    html_code = f"""
+    html_code = """
 <!DOCTYPE html>
 <html>
 <head>
     <title>Резюме</title>
     <style>
-         body {
+        body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
@@ -96,8 +96,10 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
+            display: flex;
+            align-items: center;
         }
-        .section h1, .section h2 {
+        .section h1, .section h2, .section h3 {
             color: #333;
         }
         .job-title, .degree, .project-name {
@@ -107,12 +109,12 @@ if st.button("Сгенерировать HTML-код", key="generate_button"):
             color: #666;
             margin-bottom: 10px;
         }
-        .expand-btn {
-            display: block;
-            width: 100%;
-            text-align: right;
-            color: #666;
-            cursor: pointer;
+        .profile-pic {
+            margin-right: 20px;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
         }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
