@@ -1,4 +1,5 @@
 import streamlit as st
+from PIL import Image
 from datetime import datetime
 
 st.set_page_config(page_title="Resume Builder", layout="wide")
@@ -12,6 +13,7 @@ with st.expander("Personal Information"):
     with col2:
         email = st.text_input("Email")
     phone = st.text_input("Phone")
+    profile_pic = st.file_uploader("Upload Profile Picture", type=["jpg", "jpeg", "png"])
 
 # Work Experience
 with st.expander("Work Experience"):
@@ -66,6 +68,19 @@ with st.expander("Skills"):
     with col2:
         soft_skills = st.text_area("Soft Skills")
 
+# Projects
+with st.expander("Projects"):
+    projects = []
+    num_projects = st.number_input("Number of Projects", min_value=0, step=1, value=0)
+    for i in range(int(num_projects)):
+        with st.container():
+            project_name = st.text_input(f"Project Name {i+1}")
+            project_link = st.text_input(f"Project Link {i+1}")
+            projects.append({
+                "name": project_name,
+                "link": project_link
+            })
+
 if st.button("Generate HTML Code"):
     html_code = f"""
 <!DOCTYPE html>
@@ -94,10 +109,10 @@ if st.button("Generate HTML Code"):
         .section h1, .section h2 {{
             color: #333;
         }}
-        .job-title, .degree {{
+        .job-title, .degree, .project-name {{
             font-weight: bold;
         }}
-        .job-details, .education-details {{
+        .job-details, .education-details, .project-link {{
             color: #666;
             margin-bottom: 10px;
         }}
@@ -116,6 +131,7 @@ if st.button("Generate HTML Code"):
 <body>
     <div class="container">
         <div class="section">
+            {'<img src="data:image/png;base64,{}" width="100" height="100" />' if profile_pic else ''}
             <h1>{name}</h1>
             <p>Email: {email}</p>
             <p>Phone: {phone}</p>
@@ -128,7 +144,6 @@ if st.button("Generate HTML Code"):
                 <p class="job-title">{job['job_title']} at {job['company']}</p>
                 <p class="job-details">({job['start_date'].strftime('%b %Y')} - {job['end_date'].strftime('%b %Y')})</p>
                 <p>{job['job_description']}</p>
-                <span class="expand-btn" onclick="toggleDescription(this)">Show More</span>
             </div>
             """ for job in work_experience])}
         </div>
@@ -144,28 +159,25 @@ if st.button("Generate HTML Code"):
         </div>
 
         <div class="section">
-            <h2>Hard Skills</h2>
+            <h2>Skills</h2>
+            <h3>Hard Skills</h3>
             <p>{hard_skills}</p>
-        </div>
-
-        <div class="section">
-            <h2>Soft Skills</h2>
+            <h3>Soft Skills</h3>
             <p>{soft_skills}</p>
         </div>
-    </div>
 
-    <script>
-        function toggleDescription(btn) {{
-            var description = btn.previousElementSibling;
-            if (description.style.display === 'none') {{
-                description.style.display = 'block';
-                btn.textContent = 'Show Less';
-            }} else {{
-                description.style.display = 'none';
-                btn.textContent = 'Show More';
-            }}
-        }}
-    </script>
+        {f"""
+        <div class="section">
+            <h2>Projects</h2>
+            {' '.join([f"""
+            <div>
+                <p class="project-name">{project['name']}</p>
+                <p class="project-link"><a href="{project['link']}" target="_blank">{project['link']}</a></p>
+            </div>
+            """ for project in projects])}
+        </div>
+        """ if projects else ""}
+    </div>
 </body>
 </html>
     """
